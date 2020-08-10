@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://sophonci.vercel.app/vercel.json</loc>
+    
+    <lastmod>2020-08-10</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://sophonci.vercel.app/archives/2851103091/</loc>
     
     <lastmod>2020-08-10</lastmod>
@@ -214,6 +221,13 @@
   </url>
   
   <url>
+    <loc>https://sophonci.vercel.app/tags/NOIP/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://sophonci.vercel.app/tags/Hexo/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
@@ -229,13 +243,6 @@
   
   <url>
     <loc>https://sophonci.vercel.app/tags/Node-js/</loc>
-    <lastmod>2020-08-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://sophonci.vercel.app/tags/NOIP/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -321,14 +328,14 @@
   </url>
   
   <url>
-    <loc>https://sophonci.vercel.app/categories/%E6%8A%80%E6%9C%AF/</loc>
+    <loc>https://sophonci.vercel.app/categories/%E6%B8%B8%E8%AE%B0/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://sophonci.vercel.app/categories/%E6%B8%B8%E8%AE%B0/</loc>
+    <loc>https://sophonci.vercel.app/categories/%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
