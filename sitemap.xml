@@ -9,6 +9,13 @@
   </url>
   
   <url>
+    <loc>https://sophonci.vercel.app/google679a0be98ea2b6aa.html</loc>
+    
+    <lastmod>2020-08-10</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://sophonci.vercel.app/archives/2851103091/</loc>
     
     <lastmod>2020-08-10</lastmod>
@@ -221,13 +228,6 @@
   </url>
   
   <url>
-    <loc>https://sophonci.vercel.app/tags/NOIP/</loc>
-    <lastmod>2020-08-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://sophonci.vercel.app/tags/Hexo/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
@@ -243,6 +243,13 @@
   
   <url>
     <loc>https://sophonci.vercel.app/tags/Node-js/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://sophonci.vercel.app/tags/NOIP/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -298,14 +305,14 @@
   </url>
   
   <url>
-    <loc>https://sophonci.vercel.app/tags/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/</loc>
+    <loc>https://sophonci.vercel.app/tags/SPOJ/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://sophonci.vercel.app/tags/SPOJ/</loc>
+    <loc>https://sophonci.vercel.app/tags/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -328,14 +335,14 @@
   </url>
   
   <url>
-    <loc>https://sophonci.vercel.app/categories/%E6%B8%B8%E8%AE%B0/</loc>
+    <loc>https://sophonci.vercel.app/categories/%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://sophonci.vercel.app/categories/%E6%8A%80%E6%9C%AF/</loc>
+    <loc>https://sophonci.vercel.app/categories/%E6%B8%B8%E8%AE%B0/</loc>
     <lastmod>2020-08-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
