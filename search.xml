@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>题解「CF1200E」Compress Words</title>
+      <link href="/archives/159643862/"/>
+      <url>/archives/159643862/</url>
+      
+        <content type="html"><![CDATA[<h2 id="题意简述">题意简述</h2><ul><li><p>给定 <span class="math inline">\(n\)</span> 个单词，将这 <span class="math inline">\(n\)</span> 个单词从前往后拼接在一起，若相邻两个单词的后缀和前缀相同则将其重合在一起。</p></li><li><p>如输入 sample please ease in out，sample 与 please 拼接得 samplease，samplease 与 ease 拼接仍得 samplease，最终得 sampleaseinout</p></li></ul><h2 id="题目分析">题目分析</h2><p>题目的关键在于求出两个字符串之间的最长公共部分，即相等的前缀与后缀。这很容易让人联想到 KMP 的 <span class="math inline">\(next\)</span> 数组，它的定义是一个字符串的前缀的最长的相同的前缀与后缀的长度，<span class="math inline">\(next[len - 1]\)</span> 的定义就是这个字符串的最长的相同的前缀与后缀的长度。</p><p>因此，对于字符串 <span class="math inline">\(s1\)</span> 和 <span class="math inline">\(s2\)</span>，我们只需要将 <span class="math inline">\(s2\)</span> 拼接在 <span class="math inline">\(s1\)</span> 前面，例如将 sample 与 please 拼接为 pleasesample，再求出这个字符串的 <span class="math inline">\(next[len - 1]\)</span> 等于 <span class="math inline">\(2\)</span>，就可以简单地得到公共部分为 ple，再从 <span class="math inline">\(2\)</span> 开始截取 please 的后半部分 ease 拼接到 sample 后面即可。</p><p>对于 <span class="math inline">\(n\)</span> 个字符串，则应该按照上面的方法依次拼接。</p><p>P.S. 一个优化：因为两个字符串之间的最长公共部分的长度显然不可能大于其中任意一个字符串的长度，所以在一开始拼接时，只需要求出两个字符串中较短的的长度 <span class="math inline">\(l\)</span>，将第一个字符串的后 <span class="math inline">\(l\)</span> 个字符拼接到第二个字符串后面，再求 <span class="math inline">\(next[len - 1]\)</span> 的值。</p><p>同时，为了防止求next时将另一个字符串也算进来，导致“共同部分”跨过两个字符串之间，要在中间插入一段数据中几乎不可能出现的字符串。因为如果某个真子串在字符串中只出现一次，最长的相同前后缀就不可能包括这个字串，也就杜绝了求出的长度越过两个字符之间的可能性。</p><h2 id="代码">代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1000000</span> + <span class="number">500</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> nxt[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getNext</span><span class="params">(<span class="built_in">string</span> s2)</span> </span>&#123;</span><br><span class="line">    nxt[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">-1</span>;</span><br><span class="line">   <span class="keyword">int</span> len2 = s2.size();</span><br><span class="line">    <span class="keyword">while</span>(i &lt; len2) &#123;</span><br><span class="line">        <span class="keyword">if</span>(j == <span class="number">-1</span> || s2[i] == s2[j]) &#123;</span><br><span class="line">         i++;</span><br><span class="line">          j++;</span><br><span class="line">          nxt[i] = j;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           j = nxt[j];</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="built_in">string</span> s, ans;</span><br><span class="line">  <span class="keyword">int</span> n, len;</span><br><span class="line">  </span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; n &gt;&gt; s;</span><br><span class="line">  ans = s;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">       <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">     len = min(ans.size(), s.size()); <span class="comment">//显然，共同部分的长度不会超过两个字符串中的任何一个</span></span><br><span class="line">        <span class="comment">//为了防止求next时将另一个字符串也算进来，导致“共同部分”跨过两个字符串之间，要在中间插入一段数据中几乎不可能出现的字符串</span></span><br><span class="line">      <span class="built_in">string</span> tmp = s + <span class="string">&quot;Idealistoj neniam maljuniĝas.&quot;</span> + ans.substr(ans.size() - len);</span><br><span class="line">      <span class="keyword">int</span> res = getNext(tmp); <span class="comment">//求出相同的最长前缀和后缀，即两个字符串的公共部分的长度</span></span><br><span class="line">       ans += s.substr(res); <span class="comment">//0 ~ res-1 的部分都是与s的公共部分，只要将res之后的部分接到ans后面既可以了</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; ans &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 题解 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 字符串 </tag>
+            
+            <tag> 题解 </tag>
+            
+            <tag> KMP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>题解「CF161D」Distance in Tree</title>
       <link href="/archives/1350111558/"/>
       <url>/archives/1350111558/</url>
@@ -19,6 +48,8 @@
       
       
         <tags>
+            
+            <tag> 题解 </tag>
             
             <tag> 树 </tag>
             
@@ -50,6 +81,8 @@
             <tag> 字符串 </tag>
             
             <tag> AC自动机 </tag>
+            
+            <tag> 题解 </tag>
             
         </tags>
       
@@ -270,13 +303,7 @@
       
       <categories>
           
-          <category> 洛谷 </category>
-          
           <category> 题解 </category>
-          
-          <category> 数学 </category>
-          
-          <category> 快速幂 </category>
           
       </categories>
       
@@ -284,6 +311,12 @@
         <tags>
             
             <tag> 题解 </tag>
+            
+            <tag> 洛谷 </tag>
+            
+            <tag> 快速幂 </tag>
+            
+            <tag> 数学 </tag>
             
         </tags>
       
@@ -413,9 +446,9 @@
       
         <tags>
             
-            <tag> 洛谷 </tag>
-            
             <tag> 题解 </tag>
+            
+            <tag> 洛谷 </tag>
             
             <tag> 快速幂 </tag>
             
@@ -519,9 +552,9 @@
       
         <tags>
             
-            <tag> 洛谷 </tag>
-            
             <tag> 题解 </tag>
+            
+            <tag> 洛谷 </tag>
             
         </tags>
       
@@ -573,9 +606,9 @@
       
         <tags>
             
-            <tag> 洛谷 </tag>
-            
             <tag> 题解 </tag>
+            
+            <tag> 洛谷 </tag>
             
         </tags>
       
@@ -679,9 +712,9 @@
       
         <tags>
             
-            <tag> 洛谷 </tag>
-            
             <tag> 题解 </tag>
+            
+            <tag> 洛谷 </tag>
             
             <tag> 图论 </tag>
             
@@ -750,10 +783,10 @@
     
     <entry>
       <title></title>
-      <link href="/google679a0be98ea2b6aa.html"/>
-      <url>/google679a0be98ea2b6aa.html</url>
+      <link href="/vercel.json"/>
+      <url>/vercel.json</url>
       
-        <content type="html"><![CDATA[google-site-verification: google679a0be98ea2b6aa.html]]></content>
+        <content type="html"><![CDATA[{"version":2,"routes":[{"handle":"filesystem"},{"src":"/(.*)","status":404,"dest":"/404.html"}]}]]></content>
       
     </entry>
     
@@ -761,10 +794,10 @@
     
     <entry>
       <title></title>
-      <link href="/vercel.json"/>
-      <url>/vercel.json</url>
+      <link href="/google679a0be98ea2b6aa.html"/>
+      <url>/google679a0be98ea2b6aa.html</url>
       
-        <content type="html"><![CDATA[{"version":2,"routes":[{"handle":"filesystem"},{"src":"/(.*)","status":404,"dest":"/404.html"}]}]]></content>
+        <content type="html"><![CDATA[google-site-verification: google679a0be98ea2b6aa.html]]></content>
       
     </entry>
     
