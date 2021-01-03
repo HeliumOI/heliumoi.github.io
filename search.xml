@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>「SCOI2009」windy 数</title>
+      <link href="/archives/1092015460/"/>
+      <url>/archives/1092015460/</url>
+      
+        <content type="html"><![CDATA[<h2 id="题意简述">题意简述</h2><p>数位DP模板题</p><p>定义状态 <span class="math inline">\(dp_{i, j}\)</span> 为长度为 <span class="math inline">\(i\)</span> 的windy数中，最高位为 <span class="math inline">\(j\)</span> 的数的数目。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 题解 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数位DP </tag>
+            
+            <tag> 题解 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>题解「CF1200E」Compress Words</title>
       <link href="/archives/159643862/"/>
       <url>/archives/159643862/</url>
@@ -134,9 +161,9 @@
       
         <tags>
             
-            <tag> 随笔 </tag>
-            
             <tag> 小说 </tag>
+            
+            <tag> 随笔 </tag>
             
             <tag> 架空历史 </tag>
             
@@ -165,9 +192,9 @@
       
         <tags>
             
-            <tag> 随笔 </tag>
-            
             <tag> 小说 </tag>
+            
+            <tag> 随笔 </tag>
             
             <tag> 架空历史 </tag>
             
@@ -196,9 +223,9 @@
       
         <tags>
             
-            <tag> 随笔 </tag>
-            
             <tag> 小说 </tag>
+            
+            <tag> 随笔 </tag>
             
             <tag> 架空历史 </tag>
             
@@ -783,17 +810,6 @@
     
     <entry>
       <title></title>
-      <link href="/vercel.json"/>
-      <url>/vercel.json</url>
-      
-        <content type="html"><![CDATA[{"version":2,"routes":[{"handle":"filesystem"},{"src":"/(.*)","status":404,"dest":"/404.html"}]}]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title></title>
       <link href="/google679a0be98ea2b6aa.html"/>
       <url>/google679a0be98ea2b6aa.html</url>
       
@@ -831,6 +847,17 @@
       <url>/tags/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/vercel.json"/>
+      <url>/vercel.json</url>
+      
+        <content type="html"><![CDATA[{"version":2,"routes":[{"handle":"filesystem"},{"src":"/(.*)","status":404,"dest":"/404.html"}]}]]></content>
       
     </entry>
     
