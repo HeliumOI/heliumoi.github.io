@@ -8,7 +8,7 @@
       <link href="/archives/1092015460/"/>
       <url>/archives/1092015460/</url>
       
-        <content type="html"><![CDATA[<h2 id="题意简述">题意简述</h2><p>数位DP模板题</p><p>定义状态 <span class="math inline">\(dp_{i, j}\)</span> 为长度为 <span class="math inline">\(i\)</span> 的windy数中，最高位为 <span class="math inline">\(j\)</span> 的数的数目。</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="题意简述">题意简述</h2><p>不含前导零且相邻两个数字之差至少为 <span class="math inline">\(2\)</span> 的正整数被称为 windy 数。windy 想知道，在 <span class="math inline">\(a\)</span> 和 <span class="math inline">\(b\)</span> 之间，包括 <span class="math inline">\(a\)</span> 和 <span class="math inline">\(b\)</span> ，总共有多少个 windy 数？</p><h2 id="题目分析">题目分析</h2><p>数位DP模板题</p><p>定义状态 <span class="math inline">\(dp_{i, j}\)</span> 为长度为 <span class="math inline">\(i\)</span> 的windy数中，最高位为 <span class="math inline">\(j\)</span> 的数的数目。</p><p>状态转移方程也很容易得到，可以直接从前一位转移过来：</p><p><span class="math display">\[dp_{i, j} = \sum dp_{i - 1, k} (|j - k| \geq 2)\]</span></p><p>主要的难点是在计算 <span class="math inline">\(1\)</span> 到 <span class="math inline">\(n\)</span> 之间的 windy 数，这可以分为几个步骤处理。</p><p>第一步，求出所有长度小于等于 <span class="math inline">\(len - 1\)</span> （<span class="math inline">\(len\)</span> 为 <span class="math inline">\(n\)</span> 的长度）的，以 <span class="math inline">\(1\)</span> ~ <span class="math inline">\(9\)</span> 为最高位的 windy 数的总数。</p><p>第二步，求出所有长度为 <span class="math inline">\(len\)</span>，最高位小于 <span class="math inline">\(n\)</span> 的最高位的 windy 数的总数。</p><p>第三步，求出所有长度为 <span class="math inline">\(len\)</span>，最高位等于 <span class="math inline">\(n\)</span> 的最高位的 windy 数的总数。这一步是最难想的，需要从第二位开始，依次枚举每一位，并累加所有以与上一位的差小于 <span class="math inline">\(2\)</span> 的数为最高位的 windy 数的总数。（前几位之前已经补足。）</p><h2 id="代码">代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">10</span> + <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> f[MAXN][MAXN];</span><br><span class="line"><span class="keyword">int</span> a[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>, len = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(a, <span class="number">0</span>, <span class="keyword">sizeof</span>(a));</span><br><span class="line">    <span class="keyword">while</span>(n != <span class="number">0</span>) &#123;</span><br><span class="line">        a[++len] = n % <span class="number">10</span>;</span><br><span class="line">        n /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//求出所有长度小于等于 len - 1 的，以 1 ~ 9 为最高位的 windy 数的总数</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">9</span>; j++) &#123;</span><br><span class="line">            ans += f[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//求出所有长度为 len，最高位小于 n 的最高位的 windy 数的总数</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; a[len]; i++) &#123;</span><br><span class="line">        ans += f[len][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//求出所有长度为 len，最高位等于 n 的最高位的 windy 数的总数</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">1</span>; i--) &#123;</span><br><span class="line">        <span class="comment">//依次枚举每一位上的值</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; a[i]; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">abs</span>(j - a[i + <span class="number">1</span>]) &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">                <span class="comment">//符合要求，累加</span></span><br><span class="line">                ans += f[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">abs</span>(a[i + <span class="number">1</span>] - a[i]) &lt; <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>; <span class="comment">//已经不是 windy 数了</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l, r;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;l, &amp;r);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">9</span>; i++) &#123;</span><br><span class="line">        f[<span class="number">1</span>][i] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= <span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= <span class="number">9</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt;= <span class="number">9</span>; k++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">abs</span>(k - j) &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">                    f[i][j] += f[i - <span class="number">1</span>][k];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, solve(r + <span class="number">1</span>) - solve(l));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       
       
       <categories>
@@ -47,9 +47,9 @@
       
         <tags>
             
-            <tag> 字符串 </tag>
-            
             <tag> 题解 </tag>
+            
+            <tag> 字符串 </tag>
             
             <tag> KMP </tag>
             
@@ -105,11 +105,11 @@
       
         <tags>
             
+            <tag> 题解 </tag>
+            
             <tag> 字符串 </tag>
             
             <tag> AC自动机 </tag>
-            
-            <tag> 题解 </tag>
             
         </tags>
       
@@ -161,9 +161,9 @@
       
         <tags>
             
-            <tag> 小说 </tag>
-            
             <tag> 随笔 </tag>
+            
+            <tag> 小说 </tag>
             
             <tag> 架空历史 </tag>
             
@@ -192,9 +192,9 @@
       
         <tags>
             
-            <tag> 小说 </tag>
-            
             <tag> 随笔 </tag>
+            
+            <tag> 小说 </tag>
             
             <tag> 架空历史 </tag>
             
@@ -223,9 +223,9 @@
       
         <tags>
             
-            <tag> 小说 </tag>
-            
             <tag> 随笔 </tag>
+            
+            <tag> 小说 </tag>
             
             <tag> 架空历史 </tag>
             
@@ -637,6 +637,8 @@
             
             <tag> 洛谷 </tag>
             
+            <tag> DP </tag>
+            
         </tags>
       
     </entry>
@@ -820,11 +822,11 @@
     
     
     <entry>
-      <title>关于</title>
-      <link href="/about/index.html"/>
-      <url>/about/index.html</url>
+      <title></title>
+      <link href="/vercel.json"/>
+      <url>/vercel.json</url>
       
-        <content type="html"><![CDATA[<h2 id="about-me">About Me</h2><p>一只蒟蒻OIer</p><p>全zypc最菜OI选手</p><p>曾经换过好几个名字，从一开始的HeliumOI一直到现在的“智子”和Sophon，有时也写作SophonCI</p><p>有人问我邮箱地址sophonci117是什么意思，117被同机房的大佬瞬间识破，是指11月7日，十月革命</p><p>至于CI，机房大佬猜是Communist International（共产国际），<del>我自己都信了</del></p><p><del>其实一开始是指Chaos Insurgency</del></p><p>自以为是一名马克思主义爱好者</p><h2 id="社交链接">社交链接</h2><p><a href="tencent://Message/?Uin=973178675">QQ</a></p><p><a href="mailto:sophonci117@gmail.com">E-Mail</a></p><p><a href="https://github.com/HeliumOI">GitHub</a></p><p><a href="https://t.me/SophonCI">Telegram</a></p><p><a href="https://www.luogu.com.cn/user/132435">洛谷</a></p><p><a href="https://space.bilibili.com/431327472">Bilibili</a></p><p>经历</p><p>2019.12 CCF CSP-J 一等奖，CSP-S二等奖</p><p>2018.12 全国信息学奥林匹克联赛NOIP2018普及组一等奖</p>]]></content>
+        <content type="html"><![CDATA[{"version":2,"routes":[{"handle":"filesystem"},{"src":"/(.*)","status":404,"dest":"/404.html"}]}]]></content>
       
     </entry>
     
@@ -842,22 +844,22 @@
     
     
     <entry>
-      <title>标签</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
+      <title>关于</title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h2 id="about-me">About Me</h2><p>一只蒟蒻OIer</p><p>全zypc最菜OI选手</p><p>曾经换过好几个名字，从一开始的HeliumOI一直到现在的“智子”和Sophon，有时也写作SophonCI</p><p>有人问我邮箱地址sophonci117是什么意思，117被同机房的大佬瞬间识破，是指11月7日，十月革命</p><p>至于CI，机房大佬猜是Communist International（共产国际），<del>我自己都信了</del></p><p><del>其实一开始是指Chaos Insurgency</del></p><p>自以为是一名马克思主义爱好者</p><h2 id="社交链接">社交链接</h2><p><a href="tencent://Message/?Uin=973178675">QQ</a></p><p><a href="mailto:sophonci117@gmail.com">E-Mail</a></p><p><a href="https://github.com/HeliumOI">GitHub</a></p><p><a href="https://t.me/SophonCI">Telegram</a></p><p><a href="https://www.luogu.com.cn/user/132435">洛谷</a></p><p><a href="https://space.bilibili.com/431327472">Bilibili</a></p><p>经历</p><p>2019.12 CCF CSP-J 一等奖，CSP-S二等奖</p><p>2018.12 全国信息学奥林匹克联赛NOIP2018普及组一等奖</p>]]></content>
       
     </entry>
     
     
     
     <entry>
-      <title></title>
-      <link href="/vercel.json"/>
-      <url>/vercel.json</url>
+      <title>标签</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
       
-        <content type="html"><![CDATA[{"version":2,"routes":[{"handle":"filesystem"},{"src":"/(.*)","status":404,"dest":"/404.html"}]}]]></content>
+        <content type="html"><![CDATA[]]></content>
       
     </entry>
     
